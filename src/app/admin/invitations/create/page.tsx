@@ -80,49 +80,38 @@ export default function CreateInvitation() {
         });
       }
 
-      // 2. Request Presigned URLs
-      setUploadStatus("Preparing upload...");
-      const presignRes = await fetch("/api/upload/presign", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug,
-          files: filesToUpload.map(f => ({ name: f.name, type: f.type }))
-        })
-      });
-
-      const presignData = await presignRes.json();
-      if (!presignRes.ok) throw new Error(presignData.error || "Failed to get upload URLs. (Check if slug already exists)");
-
-      const presignedUrls = presignData.presignedUrls;
-
-      // 3. Upload files to S3 (Bunny.net) directly
+      // 2. Upload files to our Next.js API in batches
       let uploadedCount = 0;
       const totalFiles = filesToUpload.length;
 
-      // Upload in batches of 5 to avoid overwhelming the browser/network
+      // Upload in batches of 5 to avoid overwhelming the Vercel server
       const batchSize = 5;
       for (let i = 0; i < totalFiles; i += batchSize) {
         const batch = filesToUpload.slice(i, i + batchSize);
         await Promise.all(batch.map(async (fileObj) => {
-          const presignedInfo = presignedUrls.find((p: any) => p.name === fileObj.name);
-          if (presignedInfo) {
-            const uploadRes = await fetch(presignedInfo.url, {
-              method: "PUT",
-              headers: { "Content-Type": presignedInfo.contentType },
-              body: fileObj.content
-            });
-            if (!uploadRes.ok) {
-              throw new Error(`Failed to upload ${fileObj.name}`);
-            }
+          
+          const uploadFormData = new FormData();
+          uploadFormData.append("slug", slug);
+          uploadFormData.append("fileName", fileObj.name);
+          uploadFormData.append("file", fileObj.content, fileObj.name);
+
+          const uploadRes = await fetch("/api/upload/file", {
+            method: "POST",
+            body: uploadFormData
+          });
+
+          if (!uploadRes.ok) {
+            const errorData = await uploadRes.json();
+            throw new Error(errorData.error || `Failed to upload ${fileObj.name}`);
           }
+          
           uploadedCount++;
           setUploadProgress(Math.round((uploadedCount / totalFiles) * 100));
           setUploadStatus(`Uploading files... (${uploadedCount}/${totalFiles})`);
         }));
       }
 
-      // 4. Save to Database
+      // 3. Save to Database
       setUploadStatus("Saving to database...");
       const dbRes = await fetch("/api/invitations/create", {
         method: "POST",
