@@ -23,7 +23,7 @@ export default async function InvitationPage(props: PageProps) {
   const query = new URLSearchParams(searchParams as Record<string, string>).toString();
   
   // Use bucketUrl from CDN if available, else fallback to old local storage
-  const baseUrl = invitation.bucketUrl ? `${invitation.bucketUrl}/index.html` : `/uploads/${params.slug}/index.html`;
+  const baseUrl = invitation.bucketUrl || `/uploads/${params.slug}/index.html`;
   const iframeUrl = `${baseUrl}${query ? `?${query}` : ''}`;
 
   return (
