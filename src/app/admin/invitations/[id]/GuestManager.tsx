@@ -9,7 +9,8 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
   const [loading, setLoading] = useState(true);
   const [bulkNames, setBulkNames] = useState("");
   const [adding, setAdding] = useState(false);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+  const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
   const [deletingGuest, setDeletingGuest] = useState<string | null>(null);
 
   type DialogState = {
@@ -209,10 +210,16 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
     return `${baseUrl}/${slug}?kepada=${encodeURIComponent(name)}`;
   };
 
-  const handleCopy = (id: string, name: string) => {
+  const handleCopyLink = (id: string, name: string) => {
     navigator.clipboard.writeText(generateLink(name));
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
+    setCopiedLinkId(id);
+    setTimeout(() => setCopiedLinkId(null), 2000);
+  };
+
+  const handleCopyMessage = (id: string, name: string) => {
+    navigator.clipboard.writeText(getWhatsAppMessage(name));
+    setCopiedMsgId(id);
+    setTimeout(() => setCopiedMsgId(null), 2000);
   };
 
   const getWhatsAppMessage = (name: string) => {
@@ -339,11 +346,21 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
                   
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => handleCopy(guest.id, guest.name)}
+                      onClick={() => handleCopyLink(guest.id, guest.name)}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-sm transition-colors border border-neutral-800"
+                      title="Copy Link"
                     >
-                      {copiedId === guest.id ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
-                      <span>{copiedId === guest.id ? "Copied" : "Copy"}</span>
+                      {copiedLinkId === guest.id ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
+                      <span className="hidden sm:inline">{copiedLinkId === guest.id ? "Copied" : "Link"}</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => handleCopyMessage(guest.id, guest.name)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-sm transition-colors border border-neutral-800"
+                      title="Copy Template Message"
+                    >
+                      {copiedMsgId === guest.id ? <Check size={14} className="text-emerald-500" /> : <MessageSquare size={14} />}
+                      <span className="hidden sm:inline">{copiedMsgId === guest.id ? "Copied" : "Pesan"}</span>
                     </button>
                     
                     <a
