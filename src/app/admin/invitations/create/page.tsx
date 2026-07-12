@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Upload, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -9,6 +9,13 @@ export default function CreateInvitation() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [domain, setDomain] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setDomain(window.location.host);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,7 +84,7 @@ export default function CreateInvitation() {
             </label>
             <div className="flex items-center">
               <span className="bg-neutral-900 border border-r-0 border-neutral-800 rounded-l-xl px-4 py-3 text-neutral-500 text-sm">
-                domain-kita.com/
+                {domain ? `${domain}/` : '.../'}
               </span>
               <input
                 type="text"
