@@ -4,12 +4,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Upload, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
+import JSZip from "jszip";
 
 export default function CreateInvitation() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [domain, setDomain] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadStatus, setUploadStatus] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,21 +24,108 @@ export default function CreateInvitation() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setUploadProgress(0);
+    setUploadStatus("Reading ZIP file...");
 
     const formData = new FormData(e.currentTarget);
+    const title = formData.get('title') as string;
+    const slug = formData.get('slug') as string;
+    const file = formData.get('file') as File;
+
+    if (!file || !title || !slug) {
+      setError("Please fill all fields");
+      setLoading(false);
+      return;
+    }
+
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      setError("Invalid slug format. Use only lowercase letters, numbers, and hyphens.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      // 1. Unzip the file in the browser
+      const zip = new JSZip();
+      const loadedZip = await zip.loadAsync(file);
+      
+      const filesToUpload: { name: string; type: string; content: Blob }[] = [];
+      let hasIndexHtml = false;
 
-      const data = await res.json();
+      setUploadStatus("Extracting files...");
+      
+      const zipEntries = Object.values(loadedZip.files);
+      for (const zipEntry of zipEntries) {
+        if (zipEntry.dir) continue;
+        
+        if (zipEntry.name === "index.html") hasIndexHtml = true;
 
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to upload");
+        const content = await zipEntry.async("blob");
+        filesToUpload.push({
+          name: zipEntry.name,
+          type: content.type || "application/octet-stream",
+          content
+        });
       }
 
+      if (!hasIndexHtml) {
+        throw new Error("The uploaded zip must contain an index.html file at the root level.");
+      }
+
+      // 2. Request Presigned URLs
+      setUploadStatus("Preparing upload...");
+      const presignRes = await fetch("/api/upload/presign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug,
+          files: filesToUpload.map(f => ({ name: f.name, type: f.type }))
+        })
+      });
+
+      const presignData = await presignRes.json();
+      if (!presignRes.ok) throw new Error(presignData.error || "Failed to get upload URLs. (Check if slug already exists)");
+
+      const presignedUrls = presignData.presignedUrls;
+
+      // 3. Upload files to S3 (Bunny.net) directly
+      let uploadedCount = 0;
+      const totalFiles = filesToUpload.length;
+
+      // Upload in batches of 5 to avoid overwhelming the browser/network
+      const batchSize = 5;
+      for (let i = 0; i < totalFiles; i += batchSize) {
+        const batch = filesToUpload.slice(i, i + batchSize);
+        await Promise.all(batch.map(async (fileObj) => {
+          const presignedInfo = presignedUrls.find((p: any) => p.name === fileObj.name);
+          if (presignedInfo) {
+            const uploadRes = await fetch(presignedInfo.url, {
+              method: "PUT",
+              headers: { "Content-Type": presignedInfo.contentType },
+              body: fileObj.content
+            });
+            if (!uploadRes.ok) {
+              throw new Error(`Failed to upload ${fileObj.name}`);
+            }
+          }
+          uploadedCount++;
+          setUploadProgress(Math.round((uploadedCount / totalFiles) * 100));
+          setUploadStatus(`Uploading files... (${uploadedCount}/${totalFiles})`);
+        }));
+      }
+
+      // 4. Save to Database
+      setUploadStatus("Saving to database...");
+      const dbRes = await fetch("/api/invitations/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, slug })
+      });
+
+      const dbData = await dbRes.json();
+      if (!dbRes.ok) throw new Error(dbData.error || "Failed to save invitation");
+
+      setUploadStatus("Done!");
       router.push("/admin");
       router.refresh();
     } catch (err: any) {
@@ -115,11 +205,26 @@ export default function CreateInvitation() {
                   </label>
                   <p className="pl-1">or drag and drop</p>
                 </div>
-                <p className="text-xs leading-5 text-neutral-500">ZIP up to 10MB</p>
+                <p className="text-xs leading-5 text-neutral-500">No file size limit (Client-Side Uploading)</p>
                 <p className="text-xs text-neutral-500 mt-1">Must contain index.html at root level</p>
               </div>
             </div>
           </div>
+
+          {loading && (
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-neutral-400">
+                <span>{uploadStatus}</span>
+                <span>{uploadProgress}%</span>
+              </div>
+              <div className="w-full bg-neutral-800 rounded-full h-2">
+                <div 
+                  className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+            </div>
+          )}
 
           <div className="pt-4 border-t border-neutral-800 flex justify-end">
             <button
@@ -130,7 +235,7 @@ export default function CreateInvitation() {
               {loading ? (
                 <>
                   <Loader2 className="animate-spin" size={18} />
-                  <span>Uploading...</span>
+                  <span>Processing...</span>
                 </>
               ) : (
                 <>
