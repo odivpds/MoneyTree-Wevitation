@@ -50,26 +50,34 @@ export default function CreateInvitation() {
       const loadedZip = await zip.loadAsync(file);
       
       const filesToUpload: { name: string; type: string; content: Blob }[] = [];
-      let hasIndexHtml = false;
+      const zipEntries = Object.values(loadedZip.files);
+      
+      // Find where index.html is located (it might be inside a folder like "online weding/index.html")
+      const indexEntry = zipEntries.find(entry => !entry.dir && entry.name.endsWith("index.html") && !entry.name.includes("__MACOSX"));
+      
+      if (!indexEntry) {
+        throw new Error("The uploaded zip must contain an index.html file.");
+      }
+
+      // Determine the root prefix (e.g., "online weding/" or "")
+      const rootPrefix = indexEntry.name.substring(0, indexEntry.name.length - "index.html".length);
 
       setUploadStatus("Extracting files...");
       
-      const zipEntries = Object.values(loadedZip.files);
       for (const zipEntry of zipEntries) {
         if (zipEntry.dir) continue;
-        
-        if (zipEntry.name === "index.html") hasIndexHtml = true;
+        // Ignore files outside the root directory or macOS hidden files
+        if (!zipEntry.name.startsWith(rootPrefix) || zipEntry.name.includes("__MACOSX") || zipEntry.name.includes(".DS_Store")) continue;
 
+        // Strip the root prefix so "online weding/style.css" becomes "style.css"
+        const relativeName = zipEntry.name.substring(rootPrefix.length);
+        
         const content = await zipEntry.async("blob");
         filesToUpload.push({
-          name: zipEntry.name,
+          name: relativeName,
           type: content.type || "application/octet-stream",
           content
         });
-      }
-
-      if (!hasIndexHtml) {
-        throw new Error("The uploaded zip must contain an index.html file at the root level.");
       }
 
       // 2. Request Presigned URLs
@@ -206,7 +214,7 @@ export default function CreateInvitation() {
                   <p className="pl-1">or drag and drop</p>
                 </div>
                 <p className="text-xs leading-5 text-neutral-500">No file size limit (Client-Side Uploading)</p>
-                <p className="text-xs text-neutral-500 mt-1">Must contain index.html at root level</p>
+                <p className="text-xs text-neutral-500 mt-1">Must contain an index.html file</p>
               </div>
             </div>
           </div>
