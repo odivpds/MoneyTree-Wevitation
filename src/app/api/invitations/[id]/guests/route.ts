@@ -37,11 +37,17 @@ export async function POST(
       return NextResponse.json({ error: 'Invitation not found' }, { status: 404 });
     }
 
-    // Prepare data for bulk insert
-    const data = names.map((name: string) => ({
-      name: name.trim(),
-      invitationId: params.id,
-    })).filter((guest: any) => guest.name.length > 0);
+    const data = names.map((item: any) => {
+      // support both string or object {name, phone}
+      if (typeof item === 'string') {
+        return { name: item.trim(), invitationId: params.id };
+      }
+      return {
+        name: item.name?.trim(),
+        phone: item.phone?.trim() || null,
+        invitationId: params.id,
+      };
+    }).filter((guest: any) => guest.name && guest.name.length > 0);
 
     if (data.length === 0) {
       return NextResponse.json({ error: 'No valid names provided' }, { status: 400 });
@@ -60,6 +66,33 @@ export async function POST(
     return NextResponse.json({ success: true, guests: updatedGuests });
   } catch (error: any) {
     console.error('Add guests error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  props: { params: Promise<{ id: string }> }
+) {
+  try {
+    const params = await props.params;
+    const { searchParams } = new URL(request.url);
+    const guestId = searchParams.get('guestId');
+
+    if (!guestId) {
+      return NextResponse.json({ error: 'guestId is required' }, { status: 400 });
+    }
+
+    await prisma.guest.deleteMany({
+      where: { 
+        id: guestId,
+        invitationId: params.id
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    console.error('Delete guest error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -60,7 +60,7 @@ export default async function AdminDashboard() {
                 </div>
                 <div className="flex items-center space-x-4">
                   <Link
-                    href={`/admin/invitations/${inv.id}`}
+                    href={`/admin/invitations/${String(inv.id)}`}
                     className="flex items-center space-x-1 text-emerald-400 hover:text-emerald-300 text-sm font-medium transition-colors"
                   >
                     <span>Manage</span>

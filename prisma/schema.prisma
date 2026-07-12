@@ -8,8 +8,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -75,10 +76,7 @@ model Guest {
   id           String     @id @default(cuid())
   name         String
   phone        String?
-  isAttending  Boolean?
-  message      String?
   invitationId String
   invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
 }
-
