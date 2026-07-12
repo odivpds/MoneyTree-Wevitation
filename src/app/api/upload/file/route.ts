@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { s3Client } from '@/lib/s3';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
 import mime from 'mime-types';
 
 export async function POST(request: Request) {
@@ -15,7 +13,10 @@ export async function POST(request: Request) {
     }
 
     const bucketName = process.env.S3_BUCKET_NAME;
-    if (!bucketName) {
+    const accessKey = process.env.S3_SECRET_ACCESS_KEY;
+    const endpoint = process.env.S3_ENDPOINT; // e.g., https://sg.storage.bunnycdn.com
+    
+    if (!bucketName || !accessKey || !endpoint) {
       return NextResponse.json({ error: 'Storage configuration is missing.' }, { status: 500 });
     }
 
@@ -24,15 +25,25 @@ export async function POST(request: Request) {
 
     const key = `${slug}/${fileName}`;
     const contentType = mime.lookup(fileName) || file.type || 'application/octet-stream';
+    
+    // Clean up endpoint (ensure no trailing slash)
+    const baseUrl = endpoint.endsWith('/') ? endpoint.slice(0, -1) : endpoint;
+    const uploadUrl = `${baseUrl}/${bucketName}/${key}`;
 
-    const command = new PutObjectCommand({
-      Bucket: bucketName,
-      Key: key,
-      Body: buffer,
-      ContentType: contentType,
+    const uploadRes = await fetch(uploadUrl, {
+      method: 'PUT',
+      headers: {
+        'AccessKey': accessKey,
+        'Content-Type': contentType,
+      },
+      body: buffer
     });
 
-    await s3Client.send(command);
+    if (!uploadRes.ok) {
+      const errText = await uploadRes.text();
+      console.error("BunnyCDN Upload Error:", uploadRes.status, errText);
+      throw new Error(`Upload failed: ${uploadRes.statusText}`);
+    }
 
     return NextResponse.json({ success: true, key });
   } catch (err: any) {
