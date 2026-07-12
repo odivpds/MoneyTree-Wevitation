@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       data: {
         title,
         slug,
-        url,
+        bucketUrl: url,
       }
     });
 
