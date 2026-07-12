@@ -34,10 +34,10 @@ export default function AdminLayout({
           </nav>
         </div>
 
-        <button className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:bg-red-500/10 hover:text-red-400 transition-colors w-full mt-auto">
+        <Link href="/admin/signout" className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:bg-red-500/10 hover:text-red-400 transition-colors w-full mt-auto">
           <LogOut size={20} />
           <span>Sign Out</span>
-        </button>
+        </Link>
       </aside>
 
       {/* Main Content */}
