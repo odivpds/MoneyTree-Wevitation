@@ -49,3 +49,5 @@ dev.db-journal
 # Uploads
 public/uploads
 dummy-invitation*
+CLAUDE.md
+AGENTS.md
