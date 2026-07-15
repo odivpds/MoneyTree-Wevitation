@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Upload, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import JSZip from "jszip";
+import { getUploadCredentials } from "./actions";
 
 export default function CreateInvitation() {
   const router = useRouter();
@@ -80,29 +81,40 @@ export default function CreateInvitation() {
         });
       }
 
-      // 2. Upload files to our Next.js API in batches
+      // 2. Get Credentials for Direct Upload
+      setUploadStatus("Securing upload token...");
+      const creds = await getUploadCredentials();
+      
+      if (!creds.endpoint || !creds.bucketName || !creds.accessKey) {
+        throw new Error("Storage credentials are not configured on the server.");
+      }
+      
+      const baseUrl = creds.endpoint.endsWith('/') ? creds.endpoint.slice(0, -1) : creds.endpoint;
+
+      // 3. Upload files directly to BunnyCDN in batches
       let uploadedCount = 0;
       const totalFiles = filesToUpload.length;
 
-      // Upload in batches of 5 to avoid overwhelming the Vercel server
+      // Upload in batches of 5 to avoid overwhelming the browser/network
       const batchSize = 5;
       for (let i = 0; i < totalFiles; i += batchSize) {
         const batch = filesToUpload.slice(i, i + batchSize);
         await Promise.all(batch.map(async (fileObj) => {
+          const uploadUrl = `${baseUrl}/${creds.bucketName}/${slug}/${fileObj.name}`;
           
-          const uploadFormData = new FormData();
-          uploadFormData.append("slug", slug);
-          uploadFormData.append("fileName", fileObj.name);
-          uploadFormData.append("file", fileObj.content, fileObj.name);
-
-          const uploadRes = await fetch("/api/upload/file", {
-            method: "POST",
-            body: uploadFormData
+          const uploadRes = await fetch(uploadUrl, {
+            method: "PUT",
+            headers: {
+              "AccessKey": creds.accessKey!,
+              "Content-Type": fileObj.type || "application/octet-stream",
+            },
+            body: fileObj.content
           });
 
           if (!uploadRes.ok) {
-            const errorData = await uploadRes.json();
-            throw new Error(errorData.error || `Failed to upload ${fileObj.name}`);
+            const errorText = await uploadRes.text();
+            console.error("Direct upload failed", uploadRes.status, errorText);
+            throw new Error(`Failed to upload ${fileObj.name} directly to storage`);
           }
           
           uploadedCount++;
@@ -111,7 +123,7 @@ export default function CreateInvitation() {
         }));
       }
 
-      // 3. Save to Database
+      // 4. Save to Database
       setUploadStatus("Saving to database...");
       const dbRes = await fetch("/api/invitations/create", {
         method: "POST",
