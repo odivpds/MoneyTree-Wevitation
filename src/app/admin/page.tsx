@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Plus, ExternalLink, MoreVertical, Calendar } from "lucide-react";
+import { Plus, ExternalLink, Calendar } from "lucide-react";
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
+import DeleteInvitationButton from "./components/DeleteInvitationButton";
 
 export const dynamic = "force-dynamic";
 
@@ -42,9 +43,7 @@ export default async function AdminDashboard() {
                   <span className={`w-1.5 h-1.5 rounded-full ${inv.status === 'PUBLISHED' ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
                   <span>{inv.status}</span>
                 </div>
-                <button className="text-neutral-500 hover:text-neutral-300 transition-colors">
-                  <MoreVertical size={18} />
-                </button>
+                <DeleteInvitationButton id={inv.id as string} title={inv.title as string} />
               </div>
 
               <h3 className="text-xl font-bold text-white mb-2 line-clamp-1">{inv.title}</h3>
