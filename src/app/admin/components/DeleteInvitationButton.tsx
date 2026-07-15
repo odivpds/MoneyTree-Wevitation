@@ -21,7 +21,7 @@ export default function DeleteInvitationButton({ id, title }: { id: string, titl
 
   return (
     <>
-      <button 
+      <button
         onClick={() => setIsOpen(true)}
         title="Hapus Undangan"
         className="text-neutral-500 hover:text-red-500 transition-colors"
@@ -32,30 +32,30 @@ export default function DeleteInvitationButton({ id, title }: { id: string, titl
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* Backdrop */}
-          <div 
+          <div
             className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
             onClick={() => !deleting && setIsOpen(false)}
           ></div>
-          
+
           {/* Dialog */}
           <div className="relative z-50 grid w-full max-w-lg scale-100 gap-4 border border-neutral-800 bg-neutral-950 p-6 shadow-lg sm:rounded-lg md:w-full animate-in fade-in-90 zoom-in-95 duration-200">
             <div className="flex flex-col space-y-2 text-center sm:text-left">
               <h2 className="text-lg font-semibold text-neutral-50">
-                Are you absolutely sure?
+                Ahh yang bener nii klee?
               </h2>
               <p className="text-sm text-neutral-400">
-                Tindakan ini tidak dapat dibatalkan. Ini akan menghapus permanen undangan 
-                <strong className="text-white font-medium ml-1">"{title}"</strong> dari server kami.
+                Kalau mu dah hapus ni, berarti tar gabisa balik lagi dia cuk, kehapus permanen dah
+                <strong className="text-white font-medium ml-1">"{title}"</strong> Gapapaa?.
               </p>
             </div>
-            
+
             <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
               <button
                 onClick={() => setIsOpen(false)}
                 disabled={deleting}
                 className="mt-2 inline-flex h-10 items-center justify-center rounded-md border border-neutral-800 bg-transparent px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors sm:mt-0 disabled:opacity-50"
               >
-                Cancel
+                Gajadi
               </button>
               <button
                 onClick={handleDelete}
@@ -65,10 +65,10 @@ export default function DeleteInvitationButton({ id, title }: { id: string, titl
                 {deleting ? (
                   <>
                     <Loader2 size={16} className="animate-spin" />
-                    <span>Deleting...</span>
+                    <span>Menghapus...</span>
                   </>
                 ) : (
-                  <span>Continue</span>
+                  <span>Lanjut</span>
                 )}
               </button>
             </div>
