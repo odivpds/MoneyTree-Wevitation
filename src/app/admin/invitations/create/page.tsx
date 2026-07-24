@@ -146,16 +146,16 @@ export default function CreateInvitation() {
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       <div className="flex items-center space-x-4">
-        <Link href="/admin" className="p-2 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-colors">
+        <Link href="/admin" className="p-2 rounded-lg bg-white border border-[#E6DFD1] text-[#677359] hover:bg-[#F9F7F2] transition-colors shadow-sm">
           <ArrowLeft size={20} />
         </Link>
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-white mb-1">Create Invitation</h2>
-          <p className="text-neutral-400">Upload a custom HTML/CSS/JS bundle for your client.</p>
+          <h2 className="text-4xl font-serif font-bold tracking-tight text-[#222] mb-1">Create Invitation</h2>
+          <p className="text-gray-500 text-sm">Upload a custom HTML/CSS/JS bundle for your client.</p>
         </div>
       </div>
 
-      <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 rounded-2xl p-8">
+      <div className="bg-white border border-[#E6DFD1] rounded-3xl p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
             <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
@@ -164,7 +164,7 @@ export default function CreateInvitation() {
           )}
 
           <div className="space-y-2">
-            <label htmlFor="title" className="block text-sm font-medium text-neutral-300">
+            <label htmlFor="title" className="block text-sm font-medium text-[#333]">
               Event Title / Client Name
             </label>
             <input
@@ -173,16 +173,16 @@ export default function CreateInvitation() {
               name="title"
               required
               placeholder="e.g., Pernikahan Gung Istri & Gung Praba"
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all"
+              className="w-full bg-[#F9F7F2] border border-[#E6DFD1] rounded-xl px-4 py-3 text-[#333] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D7C7B2]/50 focus:border-[#D4C4B7] transition-all"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="slug" className="block text-sm font-medium text-neutral-300">
+            <label htmlFor="slug" className="block text-sm font-medium text-[#333]">
               URL Slug
             </label>
             <div className="flex items-center">
-              <span className="bg-neutral-900 border border-r-0 border-neutral-800 rounded-l-xl px-4 py-3 text-neutral-500 text-sm">
+              <span className="bg-[#F0EBE1] border border-r-0 border-[#E6DFD1] rounded-l-xl px-4 py-3 text-gray-500 text-sm">
                 {domain ? `${domain}/` : '.../'}
               </span>
               <input
@@ -191,55 +191,55 @@ export default function CreateInvitation() {
                 name="slug"
                 required
                 placeholder="gung-istri-gung-praba"
-                className="flex-1 bg-neutral-950 border border-neutral-800 rounded-r-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all"
+                className="flex-1 bg-[#F9F7F2] border border-[#E6DFD1] rounded-r-xl px-4 py-3 text-[#333] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D7C7B2]/50 focus:border-[#D4C4B7] transition-all"
               />
             </div>
-            <p className="text-xs text-neutral-500 mt-1">Lowercase letters, numbers, and hyphens only.</p>
+            <p className="text-xs text-gray-400 mt-1">Lowercase letters, numbers, and hyphens only.</p>
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-neutral-300">
+            <label className="block text-sm font-medium text-[#333]">
               Upload Files (.zip)
             </label>
-            <div className="mt-2 flex justify-center rounded-xl border border-dashed border-neutral-700 px-6 py-10 bg-neutral-950 hover:bg-neutral-900/80 transition-colors relative group">
+            <div className="mt-2 flex justify-center rounded-xl border border-dashed border-[#D7C7B2] px-6 py-10 bg-[#F9F7F2] hover:bg-[#F0EBE1] transition-colors relative group">
               <div className="text-center">
-                <Upload className="mx-auto h-12 w-12 text-neutral-500 group-hover:text-emerald-400 transition-colors" aria-hidden="true" />
-                <div className="mt-4 flex text-sm leading-6 text-neutral-400 justify-center">
+                <Upload className="mx-auto h-12 w-12 text-[#D4C4B7] group-hover:text-[#677359] transition-colors" aria-hidden="true" />
+                <div className="mt-4 flex text-sm leading-6 text-gray-500 justify-center">
                   <label
                     htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md font-semibold text-emerald-400 hover:text-emerald-300 focus-within:outline-none"
+                    className="relative cursor-pointer rounded-md font-semibold text-[#677359] hover:text-[#58634c] focus-within:outline-none"
                   >
                     <span>Upload a file</span>
                     <input id="file-upload" name="file" type="file" accept=".zip" className="sr-only" required />
                   </label>
                   <p className="pl-1">or drag and drop</p>
                 </div>
-                <p className="text-xs leading-5 text-neutral-500">No file size limit (Client-Side Uploading)</p>
-                <p className="text-xs text-neutral-500 mt-1">Must contain an index.html file</p>
+                <p className="text-xs leading-5 text-gray-400">No file size limit (Client-Side Uploading)</p>
+                <p className="text-xs text-gray-400 mt-1">Must contain an index.html file</p>
               </div>
             </div>
           </div>
 
           {loading && (
             <div className="space-y-2">
-              <div className="flex justify-between text-sm text-neutral-400">
+              <div className="flex justify-between text-sm text-gray-500">
                 <span>{uploadStatus}</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div className="w-full bg-neutral-800 rounded-full h-2">
+              <div className="w-full bg-[#F0EBE1] rounded-full h-2">
                 <div 
-                  className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+                  className="bg-[#677359] h-2 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 ></div>
               </div>
             </div>
           )}
 
-          <div className="pt-4 border-t border-neutral-800 flex justify-end">
+          <div className="pt-4 border-t border-[#E6DFD1] flex justify-end">
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-500/50 disabled:cursor-not-allowed text-neutral-950 px-6 py-3 rounded-xl font-semibold transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+              className="flex items-center space-x-2 bg-[#677359] hover:bg-[#58634c] disabled:bg-[#677359]/50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-full font-semibold transition-all shadow-sm"
             >
               {loading ? (
                 <>
