@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Settings, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, Settings, LogOut, Menu, X, LayoutTemplate } from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -12,6 +12,7 @@ export default function Sidebar() {
   const navLinks = [
     { name: "Invitations", href: "/admin", icon: LayoutDashboard },
     { name: "Clients", href: "/admin/users", icon: Users },
+    { name: "Templates", href: "/admin/templates", icon: LayoutTemplate },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
