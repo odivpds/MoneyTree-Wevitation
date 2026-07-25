@@ -24,7 +24,7 @@ export default function DeleteInvitationButton({ id, title }: { id: string, titl
       <button
         onClick={() => setIsOpen(true)}
         title="Hapus Undangan"
-        className="text-neutral-500 hover:text-red-500 transition-colors"
+        className="text-gray-400 hover:text-red-500 transition-colors"
       >
         <Trash2 size={18} />
       </button>
@@ -33,19 +33,19 @@ export default function DeleteInvitationButton({ id, title }: { id: string, titl
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
             onClick={() => !deleting && setIsOpen(false)}
           ></div>
 
           {/* Dialog */}
-          <div className="relative z-50 grid w-full max-w-lg scale-100 gap-4 border border-neutral-800 bg-neutral-950 p-6 shadow-lg sm:rounded-lg md:w-full animate-in fade-in-90 zoom-in-95 duration-200">
+          <div className="relative z-50 grid w-full max-w-lg scale-100 gap-4 border border-[#E6DFD1] bg-white p-6 shadow-xl sm:rounded-2xl md:w-full">
             <div className="flex flex-col space-y-2 text-center sm:text-left">
-              <h2 className="text-lg font-semibold text-neutral-50">
+              <h2 className="text-lg font-serif font-bold text-[#333]">
                 Ahh yang bener nii klee?
               </h2>
-              <p className="text-sm text-neutral-400">
+              <p className="text-sm text-gray-500">
                 Kalau mu dah hapus ni, berarti tar gabisa balik lagi dia cuk, kehapus permanen dah
-                <strong className="text-white font-medium ml-1">"{title}"</strong> Gapapaa?.
+                <strong className="text-[#333] font-medium ml-1">"{title}"</strong> Gapapaa?.
               </p>
             </div>
 
@@ -53,14 +53,14 @@ export default function DeleteInvitationButton({ id, title }: { id: string, titl
               <button
                 onClick={() => setIsOpen(false)}
                 disabled={deleting}
-                className="mt-2 inline-flex h-10 items-center justify-center rounded-md border border-neutral-800 bg-transparent px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors sm:mt-0 disabled:opacity-50"
+                className="mt-2 inline-flex h-10 items-center justify-center rounded-full border border-[#E6DFD1] bg-white px-4 py-2 text-sm font-semibold text-[#333] hover:bg-[#F9F7F2] transition-colors sm:mt-0 disabled:opacity-50"
               >
                 Gajadi
               </button>
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="inline-flex h-10 items-center justify-center space-x-2 rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 transition-colors disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center space-x-2 rounded-full bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 transition-colors disabled:opacity-50"
               >
                 {deleting ? (
                   <>
