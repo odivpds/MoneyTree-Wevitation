@@ -235,15 +235,15 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
       <div className="lg:col-span-1 space-y-6">
         
         {/* Bulk Add Box */}
-        <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 rounded-2xl p-6">
+        <div className="bg-white border border-[#E6DFD1] rounded-3xl p-6 shadow-sm">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <Users size={18} className="text-emerald-500" />
+            <h3 className="text-lg font-serif font-bold text-[#333] flex items-center gap-2">
+              <Users size={18} className="text-[#677359]" />
               Add Guests
             </h3>
             <button 
               onClick={handleDownloadTemplate}
-              className="text-xs text-neutral-400 hover:text-emerald-400 flex items-center gap-1 transition-colors"
+              className="text-xs text-gray-400 hover:text-[#677359] flex items-center gap-1 transition-colors"
             >
               <Download size={12} /> Template Excel
             </button>
@@ -260,29 +260,29 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={adding}
-              className="w-full flex items-center justify-center gap-2 bg-neutral-800 hover:bg-neutral-700 disabled:bg-neutral-800/50 text-white px-4 py-2.5 rounded-xl font-semibold transition-all border border-neutral-700 border-dashed"
+              className="w-full flex items-center justify-center gap-2 bg-[#F9F7F2] hover:bg-[#F0EBE1] disabled:bg-[#F9F7F2]/50 text-[#333] px-4 py-2.5 rounded-xl font-medium transition-all border border-dashed border-[#D7C7B2]"
             >
-              {adding ? <Loader2 size={18} className="animate-spin" /> : <UploadCloud size={18} />}
+              {adding ? <Loader2 size={18} className="animate-spin text-[#677359]" /> : <UploadCloud size={18} className="text-[#D4C4B7]" />}
               <span>Upload dari Excel</span>
             </button>
           </div>
           
           <div className="flex items-center gap-4 my-4">
-            <div className="h-px bg-neutral-800 flex-1"></div>
-            <span className="text-xs text-neutral-500 font-medium uppercase">Atau Ketik Manual</span>
-            <div className="h-px bg-neutral-800 flex-1"></div>
+            <div className="h-px bg-[#E6DFD1] flex-1"></div>
+            <span className="text-xs text-gray-400 font-medium uppercase">Atau Ketik Manual</span>
+            <div className="h-px bg-[#E6DFD1] flex-1"></div>
           </div>
 
           <textarea
             value={bulkNames}
             onChange={(e) => setBulkNames(e.target.value)}
-            className="w-full h-32 bg-neutral-950 border border-neutral-800 rounded-xl p-4 text-white placeholder-neutral-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none text-sm"
+            className="w-full h-32 bg-[#F9F7F2] border border-[#E6DFD1] rounded-xl p-4 text-[#333] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D7C7B2]/50 focus:border-[#D4C4B7] resize-none text-sm transition-all"
             placeholder={`Budi Santoso, 08123456789\nKeluarga Bapak Andi\nCaca & Partner, 6281299998888`}
           />
           <button
             onClick={handleBulkAdd}
             disabled={adding || !bulkNames.trim()}
-            className="w-full mt-4 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-500/50 disabled:cursor-not-allowed text-neutral-950 px-4 py-2.5 rounded-xl font-semibold transition-all"
+            className="w-full mt-4 flex items-center justify-center gap-2 bg-[#677359] hover:bg-[#58634c] disabled:bg-[#677359]/50 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-full font-semibold transition-all shadow-sm"
           >
             {adding ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
             <span>Tambah ke Daftar</span>
@@ -290,23 +290,23 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
         </div>
 
         {/* WhatsApp Template Box */}
-        <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 rounded-2xl p-6">
-          <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-            <MessageSquare size={18} className="text-emerald-500" />
+        <div className="bg-white border border-[#E6DFD1] rounded-3xl p-6 shadow-sm">
+          <h3 className="text-lg font-serif font-bold text-[#333] mb-2 flex items-center gap-2">
+            <MessageSquare size={18} className="text-[#677359]" />
             WhatsApp Template
           </h3>
-          <p className="text-sm text-neutral-400 mb-4">
-            Gunakan <strong className="text-emerald-400">[Nama Tamu]</strong> dan <strong className="text-emerald-400">[Link Undangan]</strong>.
+          <p className="text-sm text-gray-500 mb-4">
+            Gunakan <strong className="text-[#677359]">[Nama Tamu]</strong> dan <strong className="text-[#677359]">[Link Undangan]</strong>.
           </p>
           <textarea
             value={waTemplate}
             onChange={(e) => setWaTemplate(e.target.value)}
-            className="w-full h-48 bg-neutral-950 border border-neutral-800 rounded-xl p-4 text-neutral-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y"
+            className="w-full h-48 bg-[#F9F7F2] border border-[#E6DFD1] rounded-xl p-4 text-[#333] text-sm focus:outline-none focus:ring-2 focus:ring-[#D7C7B2]/50 focus:border-[#D4C4B7] resize-y transition-all"
           />
           <button
             onClick={handleSaveTemplate}
             disabled={savingTemplate || !waTemplate.trim()}
-            className="w-full mt-4 flex items-center justify-center gap-2 bg-neutral-800 hover:bg-neutral-700 disabled:bg-neutral-900 disabled:text-neutral-600 text-white px-4 py-2.5 rounded-xl font-semibold transition-all border border-neutral-700"
+            className="w-full mt-4 flex items-center justify-center gap-2 bg-[#F0EBE1] hover:bg-[#E6DFD1] disabled:bg-[#F9F7F2] disabled:text-gray-400 text-[#333] px-4 py-2.5 rounded-full font-semibold transition-all border border-[#E6DFD1]"
           >
             {savingTemplate ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
             <span>Simpan Template</span>
@@ -317,29 +317,29 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
 
       {/* Right Column: Guest List */}
       <div className="lg:col-span-2">
-        <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 rounded-2xl p-6 h-full min-h-[400px]">
-          <h3 className="text-lg font-bold text-white mb-4">
+        <div className="bg-white border border-[#E6DFD1] rounded-3xl p-6 shadow-sm h-full min-h-[400px]">
+          <h3 className="text-lg font-serif font-bold text-[#333] mb-4">
             Guest List ({guests.length})
           </h3>
 
           {loading ? (
             <div className="flex justify-center py-12">
-              <Loader2 className="animate-spin text-emerald-500" size={32} />
+              <Loader2 className="animate-spin text-[#677359]" size={32} />
             </div>
           ) : guests.length === 0 ? (
-            <div className="text-center py-12 border border-neutral-800 border-dashed rounded-xl bg-neutral-950/50">
-              <p className="text-neutral-500">No guests added yet.</p>
+            <div className="text-center py-12 border border-[#E6DFD1] border-dashed rounded-xl bg-[#F9F7F2]">
+              <p className="text-gray-500">No guests added yet.</p>
             </div>
           ) : (
             <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
               {guests.map((guest) => (
-                <div key={guest.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-neutral-950 border border-neutral-800 hover:border-neutral-700 transition-colors gap-4">
+                <div key={guest.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-[#F9F7F2] border border-[#E6DFD1] hover:border-[#D4C4B7] transition-colors gap-4">
                   <div>
-                    <h4 className="font-medium text-white flex items-center gap-2">
+                    <h4 className="font-medium text-[#333] flex items-center gap-2">
                       {guest.name}
-                      {guest.phone && <span className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">{guest.phone}</span>}
+                      {guest.phone && <span className="text-xs bg-[#677359]/10 text-[#677359] px-2 py-0.5 rounded-full border border-[#677359]/20">{guest.phone}</span>}
                     </h4>
-                    <p className="text-xs text-neutral-500 font-mono mt-1 break-all">
+                    <p className="text-xs text-gray-400 font-mono mt-1 break-all">
                       {generateLink(guest.name)}
                     </p>
                   </div>
@@ -347,19 +347,19 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleCopyLink(guest.id, guest.name)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-sm transition-colors border border-neutral-800"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-[#F0EBE1] text-[#555] text-sm transition-colors border border-[#E6DFD1]"
                       title="Copy Link"
                     >
-                      {copiedLinkId === guest.id ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
+                      {copiedLinkId === guest.id ? <Check size={14} className="text-[#677359]" /> : <Copy size={14} />}
                       <span className="hidden sm:inline">{copiedLinkId === guest.id ? "Copied" : "Link"}</span>
                     </button>
                     
                     <button
                       onClick={() => handleCopyMessage(guest.id, guest.name)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-sm transition-colors border border-neutral-800"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-[#F0EBE1] text-[#555] text-sm transition-colors border border-[#E6DFD1]"
                       title="Copy Template Message"
                     >
-                      {copiedMsgId === guest.id ? <Check size={14} className="text-emerald-500" /> : <MessageSquare size={14} />}
+                      {copiedMsgId === guest.id ? <Check size={14} className="text-[#677359]" /> : <MessageSquare size={14} />}
                       <span className="hidden sm:inline">{copiedMsgId === guest.id ? "Copied" : "Pesan"}</span>
                     </button>
                     
@@ -376,7 +376,7 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
                     <button
                       onClick={() => confirmDeleteGuest(guest.id)}
                       disabled={deletingGuest === guest.id}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 disabled:bg-red-500/5 disabled:text-red-500/50 text-red-500 text-sm transition-colors border border-red-500/20 ml-2"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 disabled:bg-red-50/50 disabled:text-red-300 text-red-500 text-sm transition-colors border border-red-200 ml-2"
                       title="Hapus tamu"
                     >
                       {deletingGuest === guest.id ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
@@ -389,17 +389,17 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
         </div>
       </div>
 
-      {/* Shadcn-like Dialog */}
+      {/* Dialog */}
       {dialog.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-neutral-950 border border-neutral-800 rounded-lg shadow-lg w-full max-w-md p-6 animate-in zoom-in-95 duration-200">
-            <h2 className="text-lg font-semibold text-neutral-50 mb-2">{dialog.title}</h2>
-            <p className="text-sm text-neutral-400 mb-6">{dialog.description}</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white border border-[#E6DFD1] rounded-2xl shadow-xl w-full max-w-md p-6">
+            <h2 className="text-lg font-serif font-bold text-[#333] mb-2">{dialog.title}</h2>
+            <p className="text-sm text-gray-500 mb-6">{dialog.description}</p>
             <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
               {dialog.type === 'confirm' && (
                 <button
                   onClick={closeDialog}
-                  className="mt-2 sm:mt-0 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-neutral-800 bg-transparent hover:bg-neutral-800 hover:text-neutral-50 h-9 px-4 py-2"
+                  className="mt-2 sm:mt-0 inline-flex items-center justify-center rounded-full text-sm font-medium transition-colors border border-[#E6DFD1] bg-white hover:bg-[#F9F7F2] text-[#333] h-9 px-4 py-2"
                 >
                   Batal
                 </button>
@@ -409,10 +409,10 @@ export default function GuestManager({ invitationId, slug, initialWaTemplate }: 
                   if (dialog.onConfirm) dialog.onConfirm();
                   closeDialog();
                 }}
-                className={`inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors h-9 px-4 py-2 ${
+                className={`inline-flex items-center justify-center rounded-full text-sm font-medium transition-colors h-9 px-4 py-2 ${
                   dialog.type === 'confirm' 
                     ? 'bg-red-500 text-white hover:bg-red-600' 
-                    : 'bg-emerald-500 text-neutral-950 hover:bg-emerald-400'
+                    : 'bg-[#677359] text-white hover:bg-[#58634c]'
                 }`}
               >
                 {dialog.type === 'confirm' ? 'Hapus' : 'OK'}
