@@ -91,7 +91,7 @@ export default function CreateInvitation() {
       
       const baseUrl = creds.endpoint.endsWith('/') ? creds.endpoint.slice(0, -1) : creds.endpoint;
 
-      // 3. Upload files directly to BunnyCDN in batches
+      // 3. Upload files directly to Cloudflare R2 in batches
       let uploadedCount = 0;
       const totalFiles = filesToUpload.length;
 

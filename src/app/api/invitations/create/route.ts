@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     }
 
     // Determine the base URL for the invitation
-    // Since Bunny pull zones are used for serving, the URL will be cdnUrl/slug
+    // Since Cloudflare R2 / Custom Domain is used for serving, the URL will be cdnUrl/slug
     const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
     if (!cdnUrl) {
       return NextResponse.json({ error: 'Storage configuration is missing.' }, { status: 500 });
