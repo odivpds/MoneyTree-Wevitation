@@ -21,7 +21,7 @@ export default function Sidebar() {
       {/* Mobile Menu Button */}
       <button 
         onClick={() => setIsOpen(true)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-neutral-900 border border-neutral-800 rounded-lg text-white"
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white border border-[#E6DFD1] rounded-lg text-[#4A4A45]"
       >
         <Menu size={24} />
       </button>
@@ -35,16 +35,16 @@ export default function Sidebar() {
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed md:static inset-y-0 left-0 z-50 w-64 border-r border-neutral-800 bg-neutral-900/90 backdrop-blur-xl p-6 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
+      <aside className={`fixed md:static inset-y-0 left-0 z-50 w-64 border-r border-[#E6DFD1] bg-white p-6 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
         <div>
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
-                <span className="font-bold text-neutral-950 text-xl">M</span>
+              <div className="w-8 h-8 rounded-full bg-[#D4C4B7] flex items-center justify-center">
+                <span className="font-serif italic text-white text-lg">M</span>
               </div>
-              <h1 className="text-xl font-bold tracking-tight text-white">MoneyTree</h1>
+              <h1 className="text-xl font-serif font-bold tracking-tight text-[#333]">MoneyTree</h1>
             </div>
-            <button className="md:hidden text-neutral-400" onClick={() => setIsOpen(false)}>
+            <button className="md:hidden text-gray-400" onClick={() => setIsOpen(false)}>
               <X size={24} />
             </button>
           </div>
@@ -60,8 +60,8 @@ export default function Sidebar() {
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${
                     isActive
-                      ? "bg-emerald-500/10 text-emerald-400"
-                      : "text-neutral-400 hover:bg-neutral-800/50 hover:text-white"
+                      ? "bg-[#F0EBE1] text-[#677359]"
+                      : "text-gray-500 hover:bg-[#F9F7F2] hover:text-[#333]"
                   }`}
                 >
                   <Icon size={20} />
@@ -74,7 +74,7 @@ export default function Sidebar() {
 
         <Link
           href="/admin/signout"
-          className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:bg-red-500/10 hover:text-red-400 transition-colors w-full mt-auto"
+          className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors w-full mt-auto"
         >
           <LogOut size={20} />
           <span>Sign Out</span>

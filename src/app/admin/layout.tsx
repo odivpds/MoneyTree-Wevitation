@@ -9,12 +9,11 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen bg-neutral-950 text-neutral-50 font-sans selection:bg-emerald-500/30">
+    <div className="flex h-screen bg-[#F9F7F2] text-[#4A4A45] font-sans selection:bg-[#D4C4B7]/30">
       <Sidebar />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-neutral-900 via-neutral-950 to-neutral-950 relative">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+      <main className="flex-1 overflow-auto bg-[#F9F7F2] relative">
         <div className="p-10 max-w-7xl mx-auto relative z-10">
           {children}
         </div>
