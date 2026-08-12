@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { updateTemplate } from "../../actions";
 import { Template } from "@prisma/client";
+import ThumbnailUpload from "../../components/ThumbnailUpload";
 
 export default function EditTemplateForm({ template }: { template: Template }) {
   const [type, setType] = useState(template.type);
@@ -34,6 +35,8 @@ export default function EditTemplateForm({ template }: { template: Template }) {
             <input type="text" name="slug" defaultValue={template.slug} required className="w-full border border-[#E6DFD1] bg-[#faf7f2] rounded-xl p-3 text-[#222] placeholder-gray-400 focus:outline-none focus:border-[#677359] focus:ring-1 focus:ring-[#677359] transition-all" placeholder="contoh: agung-v2" />
           </div>
         </div>
+
+        <ThumbnailUpload defaultValue={template.image || ""} />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>

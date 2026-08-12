@@ -11,7 +11,7 @@ export default function Sidebar() {
 
   const navLinks = [
     { name: "Invitations", href: "/admin", icon: LayoutDashboard },
-    { name: "Clients", href: "/admin/users", icon: Users },
+    { name: "Users", href: "/admin/users", icon: Users },
     { name: "Templates", href: "/admin/templates", icon: LayoutTemplate },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
@@ -19,7 +19,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Menu Button */}
-      <button 
+      <button
         onClick={() => setIsOpen(true)}
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white border border-[#E6DFD1] rounded-lg text-[#4A4A45]"
       >
@@ -28,7 +28,7 @@ export default function Sidebar() {
 
       {/* Overlay */}
       {isOpen && (
-        <div 
+        <div
           className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
         />
@@ -58,11 +58,10 @@ export default function Sidebar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${
-                    isActive
+                  className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive
                       ? "bg-[#F0EBE1] text-[#677359]"
                       : "text-gray-500 hover:bg-[#F9F7F2] hover:text-[#333]"
-                  }`}
+                    }`}
                 >
                   <Icon size={20} />
                   <span>{link.name}</span>

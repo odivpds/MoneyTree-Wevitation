@@ -3,7 +3,7 @@ import { Users, Activity } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function ClientsPage() {
+export default async function UsersPage() {
   // Query all users and include their active sessions
   const users = await prisma.user.findMany({
     orderBy: {
@@ -26,14 +26,14 @@ export default async function ClientsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-serif tracking-tight text-[#222]">Clients</h1>
+        <h1 className="text-4xl font-serif tracking-tight text-[#222]">Users</h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white border border-[#E6DFD1] rounded-3xl p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm font-medium">Total Clients</p>
+              <p className="text-gray-500 text-sm font-medium">Total Users</p>
               <h3 className="text-3xl font-serif text-[#222] mt-2">{users.length}</h3>
             </div>
             <div className="w-12 h-12 rounded-full bg-[#F0EBE1] flex items-center justify-center">
@@ -66,7 +66,7 @@ export default async function ClientsPage() {
 
       <div className="bg-white border border-[#E6DFD1] rounded-3xl overflow-hidden shadow-sm">
         <div className="px-6 py-4 border-b border-[#E6DFD1] bg-[#F9F7F2]/50">
-          <h2 className="text-lg font-serif font-bold text-[#222]">Client List</h2>
+          <h2 className="text-lg font-serif font-bold text-[#222]">Users List</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-500">
@@ -107,7 +107,7 @@ export default async function ClientsPage() {
               {users.length === 0 && (
                 <tr>
                   <td colSpan={4} className="px-6 py-8 text-center text-gray-400">
-                    No clients found.
+                    No Users found.
                   </td>
                 </tr>
               )}

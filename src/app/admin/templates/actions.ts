@@ -13,6 +13,7 @@ export async function createTemplate(formData: FormData) {
   const htmlContent = formData.get("htmlContent") as string;
   const cssContent = formData.get("cssContent") as string;
   const jsContent = formData.get("jsContent") as string;
+  const image = formData.get("image") as string;
 
   if (!name || !slug || !type) {
     throw new Error("Data wajib tidak boleh kosong.");
@@ -34,6 +35,7 @@ export async function createTemplate(formData: FormData) {
       type,
       category: category || "tradisional",
       price: price || "Gratis",
+      image: image || null,
       htmlContent: (type === 'html' || type === 'html-js') ? htmlContent : null,
       cssContent: (type === 'html' || type === 'html-js') ? cssContent : null,
       jsContent: type === 'html-js' ? jsContent : null,
@@ -53,6 +55,7 @@ export async function updateTemplate(originalSlug: string, formData: FormData) {
   const htmlContent = formData.get("htmlContent") as string;
   const cssContent = formData.get("cssContent") as string;
   const jsContent = formData.get("jsContent") as string;
+  const image = formData.get("image") as string;
 
   if (!name || !slug || !type) {
     throw new Error("Data wajib tidak boleh kosong.");
@@ -76,6 +79,7 @@ export async function updateTemplate(originalSlug: string, formData: FormData) {
       type,
       category: category || "tradisional",
       price: price || "Gratis",
+      image: image || null,
       htmlContent: (type === 'html' || type === 'html-js') ? htmlContent : null,
       cssContent: (type === 'html' || type === 'html-js') ? cssContent : null,
       jsContent: type === 'html-js' ? jsContent : null,

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { createTemplate } from "../actions";
+import ThumbnailUpload from "../components/ThumbnailUpload";
 
 export default function CreateTemplatePage() {
   const [type, setType] = useState('html');
@@ -30,6 +31,8 @@ export default function CreateTemplatePage() {
             <input type="text" name="slug" required className="w-full border border-[#E6DFD1] bg-[#faf7f2] rounded-xl p-3 text-[#222] placeholder-gray-400 focus:outline-none focus:border-[#677359] focus:ring-1 focus:ring-[#677359] transition-all" placeholder="contoh: agung-v2" />
           </div>
         </div>
+
+        <ThumbnailUpload />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
