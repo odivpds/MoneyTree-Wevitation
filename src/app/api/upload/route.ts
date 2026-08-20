@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { s3Client } from '@/lib/s3';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
-import mime from 'mime-types';
+import { writeFile, mkdir } from 'fs/promises';
+import path from 'path';
 
 export async function POST(request: Request) {
   try {
@@ -13,27 +12,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    const bucketName = process.env.S3_BUCKET_NAME;
-    if (!bucketName) {
-      return NextResponse.json({ error: 'Storage configuration is missing.' }, { status: 500 });
-    }
-
     const buffer = Buffer.from(await file.arrayBuffer());
     const name = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
-    const key = `${slug}/${name}`;
-    const contentType = file.type || mime.lookup(name) || 'application/octet-stream';
+    
+    // Path untuk menyimpan di public/uploads
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads', slug);
+    const filePath = path.join(uploadDir, name);
 
-    const command = new PutObjectCommand({
-      Bucket: bucketName,
-      Key: key,
-      Body: buffer,
-      ContentType: contentType,
-    });
+    // Buat direktori jika belum ada
+    await mkdir(uploadDir, { recursive: true });
+    
+    // Tulis file ke disk
+    await writeFile(filePath, buffer);
 
-    await s3Client.send(command);
-
-    const publicUrlBase = process.env.NEXT_PUBLIC_R2_PUBLIC_URL || "";
-    const url = `${publicUrlBase.replace(/\/$/, '')}/${key}`;
+    // URL yang bisa diakses
+    // Pada environment production cPanel, pastikan variable ini mengarah ke domain CMS
+    const baseUrl = process.env.NEXT_PUBLIC_CMS_URL || "http://localhost:3001";
+    const url = `${baseUrl.replace(/\/$/, '')}/uploads/${slug}/${name}`;
 
     return NextResponse.json({ url });
   } catch (err: any) {
