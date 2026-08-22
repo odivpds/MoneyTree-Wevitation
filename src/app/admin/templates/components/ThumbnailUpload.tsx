@@ -41,7 +41,7 @@ export default function ThumbnailUpload({ defaultValue = "" }: ThumbnailUploadPr
         const errorData = await res.json();
         throw new Error(errorData.error || "Gagal mengunggah file");
       }
-      
+
       const data = await res.json();
       const finalUrl = data.url;
 
@@ -64,24 +64,23 @@ export default function ThumbnailUpload({ defaultValue = "" }: ThumbnailUploadPr
       <label className="block text-sm font-bold text-[#333] uppercase tracking-wider mb-2">
         Gambar Thumbnail
       </label>
-      
+
       <input type="hidden" name="image" value={imageUrl} />
-      
-      <div 
+
+      <div
         onClick={triggerSelect}
-        className={`relative border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${
-          error ? 'border-red-400 bg-red-50' : 
-          imageUrl ? 'border-[#677359] bg-[#faf7f2]' : 'border-[#E6DFD1] hover:border-[#677359] hover:bg-[#faf7f2]'
-        }`}
+        className={`relative border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${error ? 'border-red-400 bg-red-50' :
+            imageUrl ? 'border-[#677359] bg-[#faf7f2]' : 'border-[#E6DFD1] hover:border-[#677359] hover:bg-[#faf7f2]'
+          }`}
       >
-        <input 
-          type="file" 
-          ref={fileInputRef} 
-          onChange={handleFileChange} 
-          accept="image/*" 
-          className="hidden" 
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          accept="image/*"
+          className="hidden"
         />
-        
+
         {isUploading ? (
           <div className="flex flex-col items-center justify-center py-8">
             <Loader2 className="w-8 h-8 text-[#677359] animate-spin mb-3" />
@@ -114,7 +113,7 @@ export default function ThumbnailUpload({ defaultValue = "" }: ThumbnailUploadPr
           </div>
         )}
       </div>
-      
+
       {error && (
         <p className="text-xs text-red-500 mt-2 font-medium">{error}</p>
       )}
